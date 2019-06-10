@@ -2,6 +2,8 @@
 import discord
 from discord.ext import commands as cmd
 
+from utils.utils import cmd_permission
+
 class LoadUnloadCog(cmd.Cog):
     def __init__(self, client):
         self.client = client

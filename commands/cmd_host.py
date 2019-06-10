@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands as cmd
 
+from utils.utils import cmd_permission
+
 class HostCommand(cmd.Cog):
 
     def __init__(self, client):
@@ -8,6 +10,9 @@ class HostCommand(cmd.Cog):
 
     @cmd.command()
     async def hostmsg(self, ctx, *, message=None) :
+        if(cmd_permission("admin") not in [role.id for role in ctx.author.roles]): # not an admin
+            return
+
         await ctx.message.delete() # delete the command message.
 
         if(message == None) :
@@ -27,6 +32,8 @@ class HostCommand(cmd.Cog):
 
     @cmd.command()
     async def host(self, ctx, code=None, mode=None) :
+        if(cmd_permission("admin") not in [role.id for role in ctx.author.roles]): # not an admin
+            return
 
         await ctx.message.delete() # delete the command message.
 
