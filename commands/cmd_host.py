@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands as cmd
 
-from utils.utils import cmd_permission
+from utils.utils import hostUsers
 
 class HostCommand(cmd.Cog):
 
@@ -10,7 +10,10 @@ class HostCommand(cmd.Cog):
 
     @cmd.command()
     async def hostmsg(self, ctx, *, message=None) :
-        if(cmd_permission("admin") not in [role.id for role in ctx.author.roles]): # not an admin
+
+        roleid = [role.id for role in ctx.author.roles]
+
+        if(not hostUsers(roleid)): # not an admin
             return
 
         await ctx.message.delete() # delete the command message.
@@ -24,6 +27,7 @@ class HostCommand(cmd.Cog):
             colour = discord.Colour.orange() # the embed colour
         )
 
+
         host = ctx.message.author # person who wrote the command
         embed.add_field(name="**Host**", value=host, inline=True)
         embed.add_field(name="**Message**", value=message, inline=True)
@@ -32,7 +36,10 @@ class HostCommand(cmd.Cog):
 
     @cmd.command()
     async def host(self, ctx, code=None, mode=None) :
-        if(cmd_permission("admin") not in [role.id for role in ctx.author.roles]): # not an admin
+
+        roleid = [role.id for role in ctx.author.roles]
+
+        if(not hostUsers(roleid)): # not an admin
             return
 
         await ctx.message.delete() # delete the command message.
@@ -52,12 +59,11 @@ class HostCommand(cmd.Cog):
 
         rules = \
         """
-        **YOU MAY** fight your drop, if someone is contesting you, you can fight them
+        **2ND ZONE** rule (when **second zone** has closed you may fight)
+        YOU MAY fight your drop, if someone is contesting you, you can fight them
         **DO NOT** fight after clearing out and leaving your drop
-        **DO NOT** fight until the 2nd zone has fully closed
+        **DO NOT** fight until the **2nd zone** has fully closed
         **DO NOT** grief, this means stealing any item at all
-        **DO NOT** play like a bot, we want you to practice like this is WC
-        Game will start in **3 minutes** from this post
         """
 
         host = ctx.message.author # person who wrote the command
@@ -65,6 +71,7 @@ class HostCommand(cmd.Cog):
         embed.add_field(name="**Host**", value=host)
         embed.add_field(name="**Custom Key**", value=code, inline=False)
         embed.add_field(name="**Rules**", value=rules, inline=False)
+        embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/588083124731117577/588091727634497562/Boom_custom_photo.jpg")
         embed.set_footer(text="Please react below once you're ready!")
 
         msg = await ctx.send(embed=embed) # send the message

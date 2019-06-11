@@ -2,9 +2,9 @@ import discord
 from discord.ext import commands
 import os
 
-client = commands.Bot(command_prefix = "/")
+client = commands.Bot(command_prefix = "!")
 
-extensions = [
+modules = [
     #handler
     "main",
     #commands
@@ -19,12 +19,12 @@ async def kill(ctx):
     await client.logout()
 
 if __name__ == "__main__":
-    for extension in extensions:
+    for module in modules:
         try:
-            client.load_extension(extension)
+            client.load_extension(module)
         except Exception as err:
-            print(f"{extension} cannot be unloaded [ERR: {err}]")
+            print(f"{module} cannot be unloaded [ERR: {err}]")
 
-    client.run(os.getenv("TOKEN"))
+    client.run(os.getenv('TOKEN'))
 
 
